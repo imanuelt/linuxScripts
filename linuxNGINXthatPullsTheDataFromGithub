@@ -1,0 +1,27 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - nginx
+  - git
+
+write_files:
+  - path: /tmp/nginx-status.txt
+    permissions: '0644'
+    content: |
+      Initial status file to ensure creation.
+
+runcmd:
+  - sudo ufw allow 'Nginx Full'
+  - sudo ufw --force enable
+  - sudo systemctl enable nginx
+  - git clone https://github.com/ADi7YA26/Student-Dashboard.git /tmp/your_project
+  - sudo cp -r /tmp/your_project/* /var/www/html/
+  - sudo systemctl start nginx
+  - echo "Nginx status:" >> /tmp/nginx-status.txt
+  - sudo systemctl status nginx >> /tmp/nginx-status.txt
+  - echo "UFW status:" >> /tmp/nginx-status.txt
+  - sudo ufw status >> /tmp/nginx-status.txt
+  - echo "Listening ports:" >> /tmp/nginx-status.txt
+  - sudo netstat -tuln >> /tmp/nginx-status.txt
+  - sudo cp /tmp/nginx-status.txt /var/www/html/nginx-status.txt

@@ -1,0 +1,14 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - nginx
+  - git
+
+runcmd:
+  - sudo ufw allow 'Nginx Full'
+  - sudo ufw --force enable
+  - sudo systemctl enable nginx
+  - git clone https://github.com/ADi7YA26/Student-Dashboard.git /tmp/your_project
+  - sudo cp -r /tmp/your_project/* /var/www/html/
+  - sudo systemctl start nginx
